@@ -1,0 +1,264 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>{{ page.title }}</title>
+    <style>
+      :root {
+        --terminal-green: #00ff00;
+        --darker-green: #006400;
+        --dark-bg: #0c0c0c;
+        --darker-bg: #050505;
+        --text-color: #33ff33;
+        --terminal-text: #33ff33;
+        --code-bg: #1a1a1a;
+        --highlight: #00ff00;
+      }
+
+      @keyframes cursor-blink {
+        0%,
+        100% {
+          opacity: 0;
+        }
+        50% {
+          opacity: 1;
+        }
+      }
+
+      body {
+        background-color: var(--dark-bg);
+        color: var(--text-color);
+        font-family: "Courier New", monospace;
+        line-height: 1.6;
+        margin: 0;
+        padding: 0;
+        min-height: 100vh;
+        position: relative;
+        overflow-x: hidden;
+        display: flex;
+        flex-direction: column;
+      }
+
+      /* Matrix rain effect in background */
+      body::before {
+        content: "";
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: repeating-linear-gradient(
+            transparent,
+            transparent 50px,
+            rgba(0, 255, 0, 0.1) 50px,
+            rgba(0, 255, 0, 0.05) 51px
+          ),
+          repeating-linear-gradient(
+            90deg,
+            transparent,
+            transparent 50px,
+            rgba(0, 255, 0, 0.1) 50px,
+            rgba(0, 255, 0, 0.05) 51px
+          );
+        opacity: 0.15;
+        z-index: -1;
+      }
+
+      .container {
+        max-width: 900px;
+        margin: 0 auto;
+        margin-top: 40px;
+        padding: 2rem;
+        background-color: rgba(0, 0, 0, 0.95);
+        position: relative;
+        box-shadow: 0 0 20px rgba(0, 255, 0, 0.1);
+        flex: 1;
+        margin-bottom: 40px; /* Matches the height of the footer */
+      }
+
+      .terminal-header {
+        top: 0;
+        left: 0;
+        width: 100%;
+        background-color: var(--darker-bg);
+        padding: 8px;
+        font-family: "Courier New", monospace;
+        color: var(--terminal-green);
+        display: flex;
+        justify-content: flex-start;
+        align-items: center;
+        z-index: 1000;
+      }
+
+      .terminal-header-content {
+        max-width: 900px;
+        width: 100%;
+        text-align: left;
+      }
+
+      /* Terminal Footer */
+      .terminal-footer {
+        position: fixed;
+        bottom: 0;
+        left: 0;
+        width: 100%;
+        background-color: var(--darker-bg);
+        border-top: 1px solid var(--terminal-green);
+        padding: 8px;
+        font-family: "Courier New", monospace;
+        color: var(--terminal-green);
+        display: flex;
+        justify-content: flex-start;
+        align-items: center;
+        z-index: 1000;
+      }
+
+      .terminal-prompt {
+        margin-right: 8px;
+      }
+
+      .terminal-cursor {
+        display: inline-block;
+        width: 8px;
+        height: 15px;
+        background-color: var(--terminal-green);
+        animation: cursor-blink 1s infinite;
+        vertical-align: middle;
+      }
+
+      h1,
+      h2,
+      h3,
+      h4,
+      h5,
+      h6 {
+        color: var(--terminal-green);
+        text-shadow: 0 0 5px var(--terminal-green);
+        border-bottom: 1px solid var(--darker-green);
+        padding-bottom: 0.3em;
+        position: relative;
+      }
+
+      h1::before {
+        content: "# ";
+      }
+      h2::before {
+        content: "## ";
+      }
+      h3::before {
+        content: "### ";
+      }
+
+      a {
+        color: var(--terminal-green);
+        text-decoration: none;
+        border-bottom: 1px dashed var(--terminal-green);
+        transition: all 0.3s ease;
+      }
+
+      a:hover {
+        background: var(--darker-green);
+        text-shadow: 0 0 5px var(--terminal-green);
+      }
+
+      code {
+        background-color: var(--code-bg);
+        padding: 0.2em 0.4em;
+        border-radius: 3px;
+        font-family: "Courier New", monospace;
+        color: var(--terminal-green);
+        border: 1px solid var(--darker-green);
+      }
+
+      pre {
+        background-color: var(--code-bg);
+        padding: 1em;
+        border-radius: 5px;
+        overflow-x: auto;
+        border: 1px solid var(--darker-green);
+        position: relative;
+      }
+
+      pre::before {
+        content: "$ ";
+        color: var(--terminal-green);
+        position: absolute;
+        left: 5px;
+        top: 5px;
+      }
+
+      pre code {
+        border: none;
+        padding: 0;
+        margin-left: 15px;
+      }
+
+      blockquote {
+        border-left: 3px solid var(--terminal-green);
+        margin: 1em 0;
+        padding-left: 1em;
+        color: var(--text-color);
+        background: rgba(0, 255, 0, 0.05);
+      }
+
+      table {
+        border-collapse: collapse;
+        width: 100%;
+        margin: 1em 0;
+        background: rgba(0, 0, 0, 0.8);
+      }
+
+      th,
+      td {
+        border: 1px solid var(--darker-green);
+        padding: 0.5em;
+      }
+
+      th {
+        background-color: var(--code-bg);
+        color: var(--terminal-green);
+      }
+
+      img {
+        max-width: 100%;
+        height: auto;
+        border: 2px solid var(--terminal-green);
+        border-radius: 2px;
+        filter: brightness(0.9) hue-rotate(120deg);
+      }
+
+      /* Scrollbar styling */
+      ::-webkit-scrollbar {
+        width: 8px;
+        height: 8px;
+      }
+
+      ::-webkit-scrollbar-track {
+        background: var(--darker-bg);
+        border: 1px solid var(--darker-green);
+      }
+
+      ::-webkit-scrollbar-thumb {
+        background: var(--terminal-green);
+        border-radius: 4px;
+      }
+
+      ::-webkit-scrollbar-thumb:hover {
+        background: var(--highlight);
+      }
+    </style>
+  </head>
+  <body>
+    <header class="terminal-header">
+      <div class="terminal-header-content">
+        root@hpc-dashboard:~# less tutorial.md
+      </div>
+    </header>
+    <div class="container">{{ content }}</div>
+    <footer class="terminal-footer">
+      <span class="terminal-prompt">root@hpc-dashboard:~# </span>
+      <div class="terminal-cursor"></div>
+    </footer>
+  </body>
+</html>
