@@ -1,8 +1,7 @@
 # Tutorial Theme for GitHub Pages
 
-A clean, interactive theme for technical tutorials and documentation on GitHub Pages with styled information boxes and code blocks.
+A couple of themes that I used for a tutorial
 
-![Theme Preview](preview.png)
 
 ## Quick Start
 
